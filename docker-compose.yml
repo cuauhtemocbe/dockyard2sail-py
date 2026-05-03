@@ -1,0 +1,15 @@
+services:
+  api:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./poetry.lock:/app/poetry.lock
+    environment:
+      - ENVIRONMENT=development
+    env_file:
+      - .env.example

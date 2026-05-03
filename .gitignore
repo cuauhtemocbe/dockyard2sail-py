@@ -1,0 +1,33 @@
+# entorno
+.env
+.env.local
+.env.*.local
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.venv/
+
+# tests y herramientas
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+
+# docker
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Claude Code
+CLAUDE.md
+.claude/
