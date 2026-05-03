@@ -19,6 +19,7 @@ build/
 .mypy_cache/
 htmlcov/
 .coverage
+coverage.xml
 
 # docker
 *.log
