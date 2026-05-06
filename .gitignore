@@ -32,3 +32,4 @@ coverage.xml
 # Claude Code
 CLAUDE.md
 .claude/
+.mcp.json
