@@ -18,7 +18,7 @@ logs:
 
 # --- Tests en container ---
 test:
-	docker compose run --rm api pytest
+	docker compose run --rm api pytest --cov=app --cov-report=term-missing
 
 test-v:
 	docker compose run --rm api pytest -v
