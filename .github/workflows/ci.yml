@@ -21,6 +21,13 @@ jobs:
       - name: Run tests with coverage
         run: make test
 
+  license-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify LICENSE file exists
+        run: test -f LICENSE
+
   build:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: [lint, test]

@@ -67,3 +67,7 @@ cp .env.example .env
 |----------|---------|-------------|
 | `ENVIRONMENT` | `development` | Entorno de ejecución |
 | `PORT` | `8000` | Puerto del servidor (inyectado por el proveedor cloud) |
+
+## Licencia
+
+[MIT](./LICENSE)
