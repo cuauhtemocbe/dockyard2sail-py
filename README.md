@@ -11,6 +11,8 @@ Template base para proyectos de APIs REST con Python. Incluye configuración lis
 
 ## Estructura
 
+Arquitectura hexagonal pragmática: separación entre presentación, dominio, lógica de negocio e infraestructura.
+
 ```
 .
 ├── Dockerfile          # Imagen de producción
@@ -18,9 +20,15 @@ Template base para proyectos de APIs REST con Python. Incluye configuración lis
 ├── docker-compose.yml  # Orquestación local
 ├── src/
 │   └── app/
-│       ├── main.py     # Aplicación FastAPI + /health
-│       └── api/
-│           └── routes.py
+│       ├── main.py             # Aplicación FastAPI + /health
+│       ├── config.py           # Settings tipados (pydantic-settings)
+│       ├── api/                # Presentación: rutas HTTP
+│       │   └── routes.py
+│       ├── domain/              # Contratos (typing.Protocol), sin dependencias externas
+│       │   └── ports.py
+│       ├── services/             # Lógica de negocio, orquesta el dominio
+│       │   └── payment_service.py
+│       └── infrastructure/       # Implementaciones concretas (DB, APIs externas, etc.)
 └── tests/
 ```
 
