@@ -51,6 +51,8 @@ make install-hooks      # Habilitar el pre-commit hook (lint + format antes de c
 
 `install`, `run-local`, `test-local` y `lint-local` quedan como fallback opcional sin Docker (requieren Python 3.13 + Poetry instalados localmente).
 
+`main` tiene branch protection: los PRs no son mergeables si `lint`, `test`, `typecheck`, `lock-check`, `trivy-fs` o `license-check` fallan. El owner del repo está exceptuado (`enforce_admins: false`) y puede seguir pusheando directo a `main`.
+
 ## Endpoints
 
 | Método | Ruta | Descripción |
