@@ -27,6 +27,9 @@ test-v:
 lint:
 	docker compose run --rm api ruff check src/ tests/
 
+format-check:
+	docker compose run --rm api ruff format --check src/ tests/
+
 # --- Local (requiere Python 3.13 activo) ---
 install:
 	poetry install
