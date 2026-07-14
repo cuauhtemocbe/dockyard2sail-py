@@ -1,7 +1,7 @@
 IMAGE = dockyard2sail-py
 
 .DEFAULT_GOAL := help
-.PHONY: help build up up-d down logs test test-v lint format-check install run-local test-local lint-local
+.PHONY: help build up up-d down logs test test-v lint format-check install-hooks install run-local test-local lint-local
 
 # --- Docker (flujo principal) ---
 
@@ -31,6 +31,10 @@ lint: up-d ## Correr ruff check dentro de Docker
 
 format-check: up-d ## Verificar formato con ruff dentro de Docker (sin modificar archivos)
 	docker compose exec api ruff format --check src/ tests/
+
+install-hooks: ## Habilitar el git hook de pre-commit (lint + format, corre en Docker)
+	git config core.hooksPath .githooks
+	chmod +x .githooks/pre-commit
 
 # --- Local (opcional: fallback sin Docker, requiere Python 3.13 y Poetry) ---
 

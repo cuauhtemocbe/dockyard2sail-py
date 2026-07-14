@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+echo "pre-commit: ruff check..."
+make lint
+
+echo "pre-commit: ruff format --check..."
+make format-check
