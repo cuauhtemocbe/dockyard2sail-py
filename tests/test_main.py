@@ -3,7 +3,7 @@ from importlib.metadata import PackageNotFoundError
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from app.main import _get_version, app
+from app.main import _get_version, app, create_app
 
 
 @pytest.fixture
@@ -49,3 +49,54 @@ def test_get_version_falls_back_when_package_not_found(monkeypatch):
     monkeypatch.setattr("app.main.version", raise_not_found)
 
     assert _get_version() == "0.0.0-dev"
+
+
+async def test_cors_disabled_by_default():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as c:
+        response = await c.get("/health", headers={"Origin": "https://app.example.com"})
+
+    assert "access-control-allow-origin" not in response.headers
+
+
+async def test_cors_allows_single_configured_origin(monkeypatch):
+    monkeypatch.setattr(
+        "app.config.settings.cors_allowed_origins", ["https://app.example.com"]
+    )
+    app_with_cors = create_app()
+    transport = ASGITransport(app=app_with_cors)
+    async with AsyncClient(transport=transport, base_url="http://test") as c:
+        response = await c.get("/health", headers={"Origin": "https://app.example.com"})
+
+    assert response.headers["access-control-allow-origin"] == "https://app.example.com"
+
+
+async def test_cors_allows_multiple_configured_origins(monkeypatch):
+    monkeypatch.setattr(
+        "app.config.settings.cors_allowed_origins",
+        ["https://app.example.com", "https://admin.example.com"],
+    )
+    app_with_cors = create_app()
+    transport = ASGITransport(app=app_with_cors)
+    async with AsyncClient(transport=transport, base_url="http://test") as c:
+        response = await c.get(
+            "/health", headers={"Origin": "https://admin.example.com"}
+        )
+
+    assert (
+        response.headers["access-control-allow-origin"] == "https://admin.example.com"
+    )
+
+
+async def test_cors_rejects_non_configured_origin(monkeypatch):
+    monkeypatch.setattr(
+        "app.config.settings.cors_allowed_origins", ["https://app.example.com"]
+    )
+    app_with_cors = create_app()
+    transport = ASGITransport(app=app_with_cors)
+    async with AsyncClient(transport=transport, base_url="http://test") as c:
+        response = await c.get(
+            "/health", headers={"Origin": "https://evil.example.com"}
+        )
+
+    assert "access-control-allow-origin" not in response.headers

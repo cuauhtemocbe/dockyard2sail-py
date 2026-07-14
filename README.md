@@ -80,6 +80,7 @@ cp .env.example .env
 |----------|---------|-------------|
 | `ENVIRONMENT` | `development` | Entorno de ejecución |
 | `PORT` | `8000` | Puerto del servidor (inyectado por el proveedor cloud) |
+| `CORS_ALLOWED_ORIGINS` | *(vacío)* | Orígenes permitidos separados por coma. Sin configurar, CORS queda deshabilitado (default seguro) |
 
 ## Licencia
 
