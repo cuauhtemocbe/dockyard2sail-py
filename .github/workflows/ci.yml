@@ -44,6 +44,20 @@ jobs:
       - name: Verify LICENSE file exists
         run: test -f LICENSE
 
+  trivy-fs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trivy filesystem scan
+        uses: aquasecurity/trivy-action@0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln
+          trivyignores: .trivyignore.yaml
+          severity: CRITICAL,HIGH
+          exit-code: "1"
+
   build:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: [lint, test]
@@ -52,3 +66,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build production image
         run: docker build -f Dockerfile -t dockyard2sail-py:ci .
+      - name: Trivy image scan
+        uses: aquasecurity/trivy-action@0.36.0
+        with:
+          scan-type: image
+          image-ref: dockyard2sail-py:ci
+          scanners: vuln
+          trivyignores: .trivyignore.yaml
+          severity: CRITICAL,HIGH
+          exit-code: "1"
