@@ -1,13 +1,16 @@
 # dockyard2sail-py
 
+![CI](https://github.com/cuauhtemocbe/dockyard2sail-py/actions/workflows/ci.yml/badge.svg)
+
 Template base para proyectos de APIs REST con Python. Incluye configuración lista para desarrollo local y deploy en Railway u otros proveedores cloud.
 
 ## Stack
 
 - **Python 3.13** + **FastAPI** + **Poetry**
-- **Docker** (imagen separada para dev y prod)
-- **pytest** + **httpx** para tests async
-- **Ruff** para linting y formato
+- **Docker** (imagen separada para dev y prod; healthcheck + digest pin en producción)
+- **pydantic-settings** para configuración tipada, validada al arranque
+- **pytest** + **httpx** para tests async (cobertura mínima 90%, forzada en CI)
+- **Ruff** para linting y formato (config explícita, enforced en CI y en un pre-commit hook)
 
 ## Estructura
 
@@ -32,18 +35,19 @@ Arquitectura hexagonal pragmática: separación entre presentación, dominio, l�
 └── tests/
 ```
 
-## Inicio rápido
+## Desarrollo
+
+Todo el flujo corre dentro de Docker vía `make` (`make help` lista todos los targets con descripción):
 
 ```bash
-# Levantar en desarrollo con hot-reload
-docker compose up
-
-# Correr tests
-docker compose run --rm api pytest
-
-# Lint
-docker compose run --rm api ruff check src
+make up               # Levantar en desarrollo con hot-reload
+make test              # Tests con cobertura (mínimo 90%)
+make lint               # ruff check
+make format-check       # ruff format --check
+make install-hooks      # Habilitar el pre-commit hook (lint + format antes de cada commit)
 ```
+
+`install`, `run-local`, `test-local` y `lint-local` quedan como fallback opcional sin Docker (requieren Python 3.13 + Poetry instalados localmente).
 
 ## Endpoints
 
@@ -55,7 +59,7 @@ docker compose run --rm api ruff check src
 
 ## Deploy
 
-Apunta tu proveedor al `Dockerfile` raíz. El puerto se configura vía la variable de entorno `PORT` (por defecto `8000`).
+Apunta tu proveedor al `Dockerfile` raíz. El puerto se configura vía la variable de entorno `PORT` (por defecto `8000`, inyectado dinámicamente por el proveedor). La imagen expone un `HEALTHCHECK` sobre `/health` y fija la imagen base a un digest específico para evitar drift.
 
 ```bash
 # Build de producción local
