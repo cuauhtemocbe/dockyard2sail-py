@@ -12,4 +12,5 @@ services:
     environment:
       - ENVIRONMENT=development
     env_file:
-      - .env.example
+      - path: .env
+        required: false
