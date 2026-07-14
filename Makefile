@@ -8,7 +8,7 @@ up:
 	docker compose up
 
 up-d:
-	docker compose up -d
+	docker compose up -d --wait
 
 down:
 	docker compose down
@@ -16,19 +16,19 @@ down:
 logs:
 	docker compose logs -f api
 
-# --- Tests en container ---
-test:
-	docker compose run --rm api pytest --cov=app --cov-report=term-missing
+# --- Tests en container (requiere el servicio arriba, lo levanta si hace falta) ---
+test: up-d
+	docker compose exec api pytest --cov=app --cov-report=term-missing
 
-test-v:
-	docker compose run --rm api pytest -v
+test-v: up-d
+	docker compose exec api pytest -v
 
 # --- Lint en container ---
-lint:
-	docker compose run --rm api ruff check src/ tests/
+lint: up-d
+	docker compose exec api ruff check src/ tests/
 
-format-check:
-	docker compose run --rm api ruff format --check src/ tests/
+format-check: up-d
+	docker compose exec api ruff format --check src/ tests/
 
 # --- Local (requiere Python 3.13 activo) ---
 install:
