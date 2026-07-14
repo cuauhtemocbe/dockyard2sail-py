@@ -1,7 +1,7 @@
 IMAGE = dockyard2sail-py
 
 .DEFAULT_GOAL := help
-.PHONY: help build up up-d down logs test test-v lint format-check typecheck install-hooks install run-local test-local lint-local
+.PHONY: help build up up-d down logs test test-v lint format-check typecheck lock-check install-hooks install run-local test-local lint-local
 
 # --- Docker (flujo principal) ---
 
@@ -34,6 +34,9 @@ format-check: up-d ## Verificar formato con ruff dentro de Docker (sin modificar
 
 typecheck: up-d ## Correr mypy dentro de Docker
 	docker compose exec api mypy src/ tests/
+
+lock-check: up-d ## Verificar que poetry.lock esté sincronizado con pyproject.toml
+	docker compose exec api poetry check --lock
 
 install-hooks: ## Habilitar el git hook de pre-commit (lint + format, corre en Docker)
 	git config core.hooksPath .githooks

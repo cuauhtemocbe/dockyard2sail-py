@@ -45,6 +45,7 @@ make test              # Tests con cobertura (mínimo 90%)
 make lint               # ruff check
 make format-check       # ruff format --check
 make typecheck           # mypy (strict en src/, relajado en tests/)
+make lock-check          # poetry check --lock (poetry.lock sincronizado con pyproject.toml)
 make install-hooks      # Habilitar el pre-commit hook (lint + format antes de cada commit)
 ```
 

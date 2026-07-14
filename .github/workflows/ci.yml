@@ -30,6 +30,13 @@ jobs:
       - name: Run mypy
         run: make typecheck
 
+  lock-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify poetry.lock is in sync with pyproject.toml
+        run: make lock-check
+
   license-check:
     runs-on: ubuntu-latest
     steps:
