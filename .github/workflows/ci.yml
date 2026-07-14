@@ -23,6 +23,13 @@ jobs:
       - name: Run tests with coverage
         run: make test
 
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run mypy
+        run: make typecheck
+
   license-check:
     runs-on: ubuntu-latest
     steps:
