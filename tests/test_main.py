@@ -100,3 +100,32 @@ async def test_cors_rejects_non_configured_origin(monkeypatch):
         )
 
     assert "access-control-allow-origin" not in response.headers
+
+
+async def test_unhandled_exception_returns_consistent_json_error():
+    test_app = create_app()
+
+    @test_app.get("/boom")
+    async def boom() -> None:
+        raise ValueError("super secret internal detail")
+
+    transport = ASGITransport(app=test_app, raise_app_exceptions=False)
+    async with AsyncClient(transport=transport, base_url="http://test") as c:
+        response = await c.get("/boom")
+
+    assert response.status_code == 500
+    assert response.json() == {"error": "Internal Server Error"}
+
+
+async def test_unhandled_exception_does_not_leak_internal_message():
+    test_app = create_app()
+
+    @test_app.get("/boom")
+    async def boom() -> None:
+        raise ValueError("super secret internal detail")
+
+    transport = ASGITransport(app=test_app, raise_app_exceptions=False)
+    async with AsyncClient(transport=transport, base_url="http://test") as c:
+        response = await c.get("/boom")
+
+    assert "super secret internal detail" not in response.text

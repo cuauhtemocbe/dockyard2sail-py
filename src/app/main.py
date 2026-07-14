@@ -1,10 +1,14 @@
+import logging
 from importlib.metadata import PackageNotFoundError, version
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from app.api.routes import router
 from app.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 def _get_version() -> str:
@@ -30,6 +34,13 @@ def create_app() -> FastAPI:
     @fastapi_app.get("/health")
     async def health() -> dict[str, str]:
         return {"status": "ok"}
+
+    @fastapi_app.exception_handler(Exception)
+    async def handle_unexpected_exception(
+        request: Request, exc: Exception
+    ) -> JSONResponse:
+        logger.exception("Unhandled exception while processing %s", request.url)
+        return JSONResponse(status_code=500, content={"error": "Internal Server Error"})
 
     return fastapi_app
 
