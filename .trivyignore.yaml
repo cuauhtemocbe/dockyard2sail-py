@@ -1,0 +1,93 @@
+vulnerabilities:
+  # Debian 13.5 base image (python:3.13-slim) — no upstream fix published yet.
+  # Reviewed 2026-07-14. Re-run trivy-scan before this date to check for fixes.
+  - id: CVE-2025-15649
+    statement: "perl-IO-Compress DoS via malformed zip header. No fix available upstream. Not reachable — app doesn't use Perl. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2025-69720
+    statement: "ncurses buffer overflow. No fix available upstream. Not reachable — app doesn't use ncurses/tinfo interactively. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-11822
+    statement: "SQLite memory corruption. No fix available upstream. Not reachable — app doesn't use sqlite3. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-11824
+    statement: "SQLite heap buffer overflow. No fix available upstream. Not reachable — app doesn't use sqlite3. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-12087
+    statement: "perl-Socket info disclosure. No fix available upstream. Not reachable — app doesn't use Perl. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-13595
+    statement: "util-linux/libblkid heap use-after-free. No fix available upstream. Not reachable — no partition probing in the container. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-27171
+    statement: "zlib DoS via infinite loop in CRC32 combine. No fix available upstream. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-27456
+    statement: "util-linux TOCTOU in mount when setting up loop devices. No fix available upstream. Not reachable — container doesn't mount loop devices. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-3184
+    statement: "util-linux hostname canonicalization bypass. No fix available upstream. Not reachable — not used for access control in this app. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-41991
+    statement: "gzip arbitrary file overwrite via insecure temp file handling in gzexe. No fix available upstream. Not reachable — app doesn't invoke gzexe. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-41992
+    statement: "gzip buffer overflow in LZH decompression. No fix available upstream. Not reachable — app doesn't decompress untrusted LZH input via gzip CLI. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-42250
+    statement: "bzip2 DoS via crafted file in bzip2recover. No fix available upstream. Not reachable — app doesn't invoke bzip2recover. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-42496
+    statement: "perl-Archive-Tar path traversal via crafted symlinks. No fix available upstream. Not reachable — app doesn't use Perl. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-42497
+    statement: "perl-Archive-Tar arbitrary file modification via hardlinks. No fix available upstream. Not reachable — app doesn't use Perl. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-48959
+    statement: "perl-IO-Compress CPU exhaustion. No fix available upstream. Not reachable — app doesn't use Perl. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-48961
+    statement: "perl-IO-Compress DoS via malformed Info-ZIP entry. No fix available upstream. Not reachable — app doesn't use Perl. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-48962
+    statement: "perl-IO-Compress arbitrary code execution via attacker-controlled output glob. No fix available upstream. Not reachable — app doesn't use Perl. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-53615
+    statement: "util-linux/libblkid integer overflow in partition probing. No fix available upstream. Not reachable — container doesn't probe disk partitions. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-5435
+    statement: "glibc out-of-bounds write via TSIG record processing. No fix available upstream. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-54369
+    statement: "libacl1 symlink traversal privilege escalation. No fix available upstream. Not reachable — app doesn't call acl functions on untrusted paths. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-54370
+    statement: "libacl1 TOCTOU symlink traversal via getfacl/setfacl. No fix available upstream. Not reachable — app doesn't invoke getfacl/setfacl. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-54371
+    statement: "libattr1 symlink traversal via getfattr/setfattr. No fix available upstream. Not reachable — app doesn't invoke getfattr/setfattr. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-54411
+    statement: "linux-pam plaintext password recovery via timing discrepancy in pam_userdb. Fix deferred upstream. Not reachable — app doesn't use PAM/pam_userdb. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-5450
+    statement: "glibc heap buffer overflow in scanf with %mc. No fix available upstream. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-5704
+    statement: "tar hidden file injection via crafted archives. No fix available upstream. Not reachable — app doesn't extract untrusted tar archives. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-5928
+    statement: "glibc info disclosure/DoS via ungetwc. No fix available upstream. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-6238
+    statement: "glibc crash/uninitialized memory read via crafted DNS response. No fix available upstream. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-7010
+    statement: "perl HTTP::Tiny CRLF injection. No fix available upstream. Not reachable — app doesn't use Perl. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-8376
+    statement: "perl heap buffer overflow compiling regex on 32-bit builds. No fix available upstream. Not reachable — app doesn't use Perl; image is 64-bit. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"
+  - id: CVE-2026-9538
+    statement: "perl-Archive-Tar DoS via crafted tar header. No fix available upstream. Not reachable — app doesn't use Perl. Accepted by Kuautli on 2026-07-14."
+    expired_at: "2026-10-12"

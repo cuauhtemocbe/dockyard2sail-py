@@ -7,7 +7,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     POETRY_HOME=/opt/poetry \
     POETRY_VIRTUALENVS_CREATE=false
 
-RUN pip install --no-cache-dir poetry==$POETRY_VERSION && \
+RUN pip install --no-cache-dir --upgrade pip==26.1.2 && \
+    pip install --no-cache-dir poetry==$POETRY_VERSION && \
     addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 
 WORKDIR /app
