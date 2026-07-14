@@ -1,3 +1,6 @@
+# Intentionally not digest-pinned (unlike Dockerfile, the production image):
+# dev benefits from automatic security patches on each local rebuild more than
+# from byte-for-byte reproducibility. See README > Deploy for the rationale.
 FROM python:3.13-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
