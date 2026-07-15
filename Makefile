@@ -1,7 +1,7 @@
 IMAGE = dockyard2sail-py
 
 .DEFAULT_GOAL := help
-.PHONY: help build up up-d down logs test test-v lint format-check typecheck lock-check install-hooks install run-local test-local lint-local
+.PHONY: help build up up-d down logs test coverage-xml test-v lint format-check typecheck lock-check install-hooks install run-local test-local lint-local
 
 # --- Docker (flujo principal) ---
 
@@ -22,6 +22,10 @@ logs: ## Seguir los logs del servicio api
 
 test: up-d ## Correr la suite de tests con cobertura dentro de Docker
 	docker compose exec api pytest --cov=app --cov-report=term-missing
+
+coverage-xml: up-d ## Generar coverage.xml dentro de Docker y copiarlo al host (para SonarQube)
+	docker compose exec api pytest --cov=app --cov-report=xml:coverage.xml
+	docker compose cp api:/app/coverage.xml ./coverage.xml
 
 test-v: up-d ## Correr los tests en modo verbose dentro de Docker
 	docker compose exec api pytest -v
