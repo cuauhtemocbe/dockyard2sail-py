@@ -75,6 +75,8 @@ docker run -p 8000:8000 dockyard2sail-py
 
 **Nota sobre el pinning del base image**: `Dockerfile` (producción) fija `python:3.13-slim` a un digest `@sha256:...` específico para builds reproducibles — Dependabot propone el bump cuando hay una versión nueva (ver `.github/dependabot.yml`). `Dockerfile.dev` usa deliberadamente el tag flotante (sin digest): en desarrollo local pesa más recibir parches de seguridad automáticos en cada rebuild que la reproducibilidad exacta byte a byte.
 
+**Nota sobre el usuario del contenedor**: `Dockerfile` (producción) corre como usuario no-root (`appuser`). `Dockerfile.dev` corre deliberadamente como root: este contenedor nunca es alcanzable fuera de localhost, y root evita que los bind mounts de `docker-compose.yml` (`src/`, `tests/`) queden no-escribibles para un uid de contenedor que no coincide con el del host (ej. al generar `tests/coverage.xml` con `make coverage-xml`).
+
 ## Variables de entorno
 
 Copia `.env.example` como punto de partida:
