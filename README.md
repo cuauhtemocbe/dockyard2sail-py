@@ -95,6 +95,10 @@ cp .env.example .env
 
 Ver [CHANGELOG.md](./CHANGELOG.md).
 
+## Estándares de desarrollo
+
+[`docs/development-standards.md`](./docs/development-standards.md) documenta el criterio detrás de las decisiones de este template (Docker-first, CI/CD, calidad de código, arquitectura, configuración, TDD, docs agent-facing) — útil como checklist al clonar este repo para un proyecto nuevo.
+
 ## Licencia
 
 [MIT](./LICENSE)
