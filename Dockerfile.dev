@@ -1,6 +1,13 @@
 # Intentionally not digest-pinned (unlike Dockerfile, the production image):
 # dev benefits from automatic security patches on each local rebuild more than
 # from byte-for-byte reproducibility. See README > Deploy for the rationale.
+#
+# Intentionally runs as root (unlike Dockerfile, the production image): the
+# bind-mounted src/ and tests/ (docker-compose.yml) are owned by the host
+# user, and a non-root container user can't write into them (e.g. pytest-cov's
+# coverage.xml) unless its UID matches the host's. No real exposure here since
+# this container is never reachable outside localhost. See
+# docs/development-standards.md sections 1 and 5.
 FROM python:3.13-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -11,8 +18,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     POETRY_VIRTUALENVS_CREATE=false
 
 RUN pip install --no-cache-dir --upgrade pip==26.1.2 && \
-    pip install --no-cache-dir poetry==$POETRY_VERSION && \
-    addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+    pip install --no-cache-dir poetry==$POETRY_VERSION
 
 WORKDIR /app
 
@@ -20,7 +26,5 @@ COPY pyproject.toml poetry.lock* ./
 RUN poetry install --no-interaction --no-ansi --no-root
 
 COPY src/ ./src/
-RUN chown -R appuser:appgroup /app
-USER appuser
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -23,9 +23,8 @@ logs: ## Seguir los logs del servicio api
 test: up-d ## Correr la suite de tests con cobertura dentro de Docker
 	docker compose exec api pytest --cov=app --cov-report=term-missing
 
-coverage-xml: up-d ## Generar coverage.xml dentro de Docker y copiarlo al host (para SonarQube)
-	docker compose exec api pytest --cov=app --cov-report=xml:coverage.xml
-	docker compose cp api:/app/coverage.xml ./coverage.xml
+coverage-xml: up-d ## Generar coverage.xml dentro de Docker, visible en el host sin copiar (ruta ya montada)
+	docker compose exec api pytest --cov=app --cov-report=xml:tests/coverage.xml
 
 test-v: up-d ## Correr los tests en modo verbose dentro de Docker
 	docker compose exec api pytest -v
