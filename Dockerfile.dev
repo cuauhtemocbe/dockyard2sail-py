@@ -8,7 +8,7 @@
 # coverage.xml) unless its UID matches the host's. No real exposure here since
 # this container is never reachable outside localhost. See
 # docs/development-standards.md sections 1 and 5.
-FROM python:3.13-slim
+FROM python:3.14-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
