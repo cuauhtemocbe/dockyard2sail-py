@@ -46,10 +46,12 @@ make lint               # ruff check
 make format-check       # ruff format --check
 make typecheck           # mypy (strict en src/, relajado en tests/)
 make lock-check          # poetry check --lock (poetry.lock sincronizado con pyproject.toml)
-make install-hooks      # Habilitar el pre-commit hook (lint + format antes de cada commit)
+make install-hooks      # Habilitar el pre-commit hook (lint + format + secret scan antes de cada commit)
 ```
 
 `install`, `run-local`, `test-local` y `lint-local` quedan como fallback opcional sin Docker (requieren Python 3.13 + Poetry instalados localmente).
+
+El pre-commit hook (`.githooks/pre-commit`, habilitado con `make install-hooks`) corre `ruff check`, `ruff format --check` y un scan de secretos sobre el diff staged con [gitleaks](https://github.com/gitleaks/gitleaks) (`gitleaks protect --staged`), vía la imagen oficial `zricethezav/gitleaks` — no requiere instalar el binario localmente, solo Docker. Complementa (no reemplaza) el scan `trivy-fs` que corre en CI sobre todo el filesystem.
 
 `main` tiene branch protection: los PRs no son mergeables si `lint`, `test`, `typecheck`, `lock-check`, `trivy-fs` o `license-check` fallan. El owner del repo está exceptuado (`enforce_admins: false`) y puede seguir pusheando directo a `main`.
 
@@ -86,6 +88,10 @@ cp .env.example .env
 | `ENVIRONMENT` | `development` | Entorno de ejecución |
 | `PORT` | `8000` | Puerto del servidor (inyectado por el proveedor cloud) |
 | `CORS_ALLOWED_ORIGINS` | *(vacío)* | Orígenes permitidos separados por coma. Sin configurar, CORS queda deshabilitado (default seguro) |
+
+## Changelog
+
+Ver [CHANGELOG.md](./CHANGELOG.md).
 
 ## Licencia
 
