@@ -6,7 +6,7 @@ Template base para proyectos de APIs REST con Python. Incluye configuración lis
 
 ## Stack
 
-- **Python 3.13** + **FastAPI** + **Poetry**
+- **Python 3.14** + **FastAPI** + **Poetry**
 - **Docker** (imagen separada para dev y prod; healthcheck + digest pin en producción)
 - **pydantic-settings** para configuración tipada, validada al arranque
 - **pytest** + **httpx** para tests async (cobertura mínima 90%, forzada en CI)
@@ -26,7 +26,10 @@ Arquitectura hexagonal pragmática: separación entre presentación, dominio, l�
 │       ├── main.py             # Aplicación FastAPI + /health
 │       ├── config.py           # Settings tipados (pydantic-settings)
 │       ├── api/                # Presentación: rutas HTTP
-│       │   └── routes.py
+│       │   ├── routes.py       # JSON API (/api/v1/...)
+│       │   └── web.py          # Landing page (/)
+│       ├── templates/          # HTML (Jinja2) para la landing page
+│       ├── static/              # CSS/JS servidos vía StaticFiles
 │       ├── domain/              # Contratos (typing.Protocol), sin dependencias externas
 │       │   └── ports.py
 │       ├── services/             # Lógica de negocio, orquesta el dominio
@@ -49,7 +52,7 @@ make lock-check          # poetry check --lock (poetry.lock sincronizado con pyp
 make install-hooks      # Habilitar el pre-commit hook (lint + format + secret scan antes de cada commit)
 ```
 
-`install`, `run-local`, `test-local` y `lint-local` quedan como fallback opcional sin Docker (requieren Python 3.13 + Poetry instalados localmente).
+`install`, `run-local`, `test-local` y `lint-local` quedan como fallback opcional sin Docker (requieren Python 3.14 + Poetry instalados localmente).
 
 El pre-commit hook (`.githooks/pre-commit`, habilitado con `make install-hooks`) corre `ruff check`, `ruff format --check` y un scan de secretos sobre el diff staged con [gitleaks](https://github.com/gitleaks/gitleaks) (`gitleaks protect --staged`), vía la imagen oficial `zricethezav/gitleaks` — no requiere instalar el binario localmente, solo Docker. Complementa (no reemplaza) el scan `trivy-fs` que corre en CI sobre todo el filesystem.
 
@@ -74,7 +77,7 @@ docker build -t dockyard2sail-py .
 docker run -p 8000:8000 dockyard2sail-py
 ```
 
-**Nota sobre el pinning del base image**: `Dockerfile` (producción) fija `python:3.13-slim` a un digest `@sha256:...` específico para builds reproducibles — Dependabot propone el bump cuando hay una versión nueva (ver `.github/dependabot.yml`). `Dockerfile.dev` usa deliberadamente el tag flotante (sin digest): en desarrollo local pesa más recibir parches de seguridad automáticos en cada rebuild que la reproducibilidad exacta byte a byte.
+**Nota sobre el pinning del base image**: `Dockerfile` (producción) fija `python:3.14-slim` a un digest `@sha256:...` específico para builds reproducibles — Dependabot propone el bump cuando hay una versión nueva (ver `.github/dependabot.yml`). `Dockerfile.dev` usa deliberadamente el tag flotante (sin digest): en desarrollo local pesa más recibir parches de seguridad automáticos en cada rebuild que la reproducibilidad exacta byte a byte.
 
 **Nota sobre el usuario del contenedor**: `Dockerfile` (producción) corre como usuario no-root (`appuser`). `Dockerfile.dev` corre deliberadamente como root: este contenedor nunca es alcanzable fuera de localhost, y root evita que los bind mounts de `docker-compose.yml` (`src/`, `tests/`) queden no-escribibles para un uid de contenedor que no coincide con el del host (ej. al generar `tests/coverage.xml` con `make coverage-xml`).
 
