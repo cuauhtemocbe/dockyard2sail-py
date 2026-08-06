@@ -59,6 +59,7 @@ El pre-commit hook (`.githooks/pre-commit`, habilitado con `make install-hooks`)
 
 | Método | Ruta | Descripción |
 |--------|------|-------------|
+| GET | `/` | Landing page interactiva (demo del pipeline y del API) |
 | GET | `/health` | Estado del servicio |
 | GET | `/api/v1/hello` | Saludo (`?name=`) |
 | GET | `/docs` | Swagger UI |

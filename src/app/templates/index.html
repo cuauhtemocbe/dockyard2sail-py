@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dockyard2sail-py</title>
+    <link rel="stylesheet" href="/static/css/landing.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="hero">
+        <h1>⚓ dockyard2sail-py 🚢</h1>
+        <p class="subtitle">
+          Boilerplate FastAPI listo para producción — Poetry, Docker,
+          arquitectura hexagonal pragmática y pipeline de CI/CD completo.
+        </p>
+        <div class="badges">
+          <span class="badge">v{{ version }}</span>
+          <span class="badge">{{ environment }}</span>
+          <span class="badge" id="health-badge">
+            <span class="dot" id="health-dot"></span>
+            <span id="health-text">verificando...</span>
+          </span>
+        </div>
+      </header>
+
+      <section class="pipeline">
+        <h2>Pipeline real de este repo</h2>
+        <div class="steps" id="pipeline-steps">
+          <div class="step" data-step="0">
+            <span class="icon">🧪</span>
+            <div class="title">Lint · Test · Typecheck</div>
+            <div class="terminal">make lint && make test && make typecheck</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="step" data-step="1">
+            <span class="icon">🔍</span>
+            <div class="title">Trivy filesystem scan</div>
+            <div class="terminal">trivy fs --severity CRITICAL,HIGH .</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="step" data-step="2">
+            <span class="icon">🐳</span>
+            <div class="title">Build + image scan</div>
+            <div class="terminal">docker build && trivy image ...</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="step" data-step="3">
+            <span class="icon">✅</span>
+            <div class="title">CI check suite</div>
+            <div class="terminal">gh checks pass on main</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="step" data-step="4">
+            <span class="icon">🚀</span>
+            <div class="title">Deploy a Railway</div>
+            <div class="terminal">railway auto-deploy</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo">
+        <h2>Probá el API en vivo</h2>
+        <p class="demo-hint">
+          Esto llama de verdad a <code>GET /api/v1/hello</code> — no hay
+          nada simulado.
+        </p>
+        <form id="hello-form">
+          <input
+            type="text"
+            id="hello-name"
+            placeholder="Tu nombre (opcional)"
+            autocomplete="off"
+          />
+          <button type="submit">Probar API</button>
+        </form>
+        <div id="hello-result" class="result" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <div class="footer">
+      Created by @Kuautli |
+      <a
+        href="https://github.com/cuauhtemocbe/dockyard2sail-py"
+        target="_blank"
+        rel="noopener noreferrer"
+        >View on GitHub</a
+      >
+    </div>
+
+    <script type="module" src="/static/js/landing.js"></script>
+  </body>
+</html>

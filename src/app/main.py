@@ -1,12 +1,17 @@
 import logging
 from importlib.metadata import PackageNotFoundError, version
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.api.routes import router
+from app.api.web import router as web_router
 from app.config import settings
+
+STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +26,8 @@ def _get_version() -> str:
 def create_app() -> FastAPI:
     fastapi_app = FastAPI(title="dockyard2sail-py", version=_get_version())
     fastapi_app.include_router(router)
+    fastapi_app.include_router(web_router)
+    fastapi_app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
     if settings.cors_allowed_origins:
         fastapi_app.add_middleware(

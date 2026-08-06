@@ -1,0 +1,224 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  background: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+#app {
+  background: white;
+  border-radius: 20px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 8px 25px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 720px;
+  padding: 2.5rem;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+  color: #134e4a;
+}
+
+.subtitle {
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-width: 480px;
+  margin: 0 auto 1.25rem;
+}
+
+.badges {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #f0fdfa;
+  border: 1px solid #99f6e4;
+  color: #0f766e;
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #9ca3af;
+  display: inline-block;
+}
+
+.dot.ok {
+  background: #10b981;
+}
+
+.dot.error {
+  background: #ef4444;
+}
+
+h2 {
+  font-size: 1.1rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.pipeline {
+  margin-bottom: 2.5rem;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  text-align: center;
+  opacity: 0.35;
+  transition: all 0.4s ease;
+}
+
+.step.visible {
+  opacity: 1;
+  border-color: #0f766e;
+  box-shadow: 0 8px 20px rgba(15, 118, 110, 0.12);
+}
+
+.step .icon {
+  font-size: 1.5rem;
+}
+
+.step .title {
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 0.85rem;
+}
+
+.step .terminal {
+  font-family: "Courier New", monospace;
+  background: #1a1a1a;
+  color: #10b981;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+.arrow {
+  text-align: center;
+  color: #0f766e;
+  font-weight: bold;
+  transform: rotate(90deg);
+}
+
+.demo {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.demo-hint {
+  color: #6b7280;
+  font-size: 0.85rem;
+  margin-top: 0;
+}
+
+.demo-hint code {
+  background: #e2e8f0;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+}
+
+#hello-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#hello-name {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+#hello-form button {
+  padding: 0.6rem 1.2rem;
+  background: #0f766e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#hello-form button:hover {
+  background: #0d5f58;
+}
+
+.result {
+  font-size: 0.9rem;
+  min-height: 1.5rem;
+}
+
+.result.success {
+  color: #047857;
+}
+
+.result.error {
+  color: #b91c1c;
+}
+
+.footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.footer a {
+  color: white;
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  #app {
+    padding: 1.5rem;
+  }
+}
