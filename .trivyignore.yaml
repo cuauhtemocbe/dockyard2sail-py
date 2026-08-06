@@ -16,6 +16,9 @@ vulnerabilities:
   - id: CVE-2026-12087
     statement: "perl-Socket info disclosure. No fix available upstream. Not reachable — app doesn't use Perl. Accepted by Kuautli on 2026-07-14."
     expired_at: "2026-10-12T00:00:00Z"
+  - id: CVE-2026-13221
+    statement: "perl silently produces incorrect results in some numeric conversions. No fix available upstream. Not reachable — app doesn't use Perl. Introduced by python:3.14-slim base image bump (#24). Accepted by Kuautli on 2026-08-06."
+    expired_at: "2026-11-04T00:00:00Z"
   - id: CVE-2026-13595
     statement: "util-linux/libblkid heap use-after-free. No fix available upstream. Not reachable — no partition probing in the container. Accepted by Kuautli on 2026-07-14."
     expired_at: "2026-10-12T00:00:00Z"
@@ -76,6 +79,12 @@ vulnerabilities:
   - id: CVE-2026-5704
     statement: "tar hidden file injection via crafted archives. No fix available upstream. Not reachable — app doesn't extract untrusted tar archives. Accepted by Kuautli on 2026-07-14."
     expired_at: "2026-10-12T00:00:00Z"
+  - id: CVE-2026-57432
+    statement: "perl information disclosure via integer overflow. No fix available upstream. Not reachable — app doesn't use Perl. Introduced by python:3.14-slim base image bump (#24). Accepted by Kuautli on 2026-08-06."
+    expired_at: "2026-11-04T00:00:00Z"
+  - id: CVE-2026-57433
+    statement: "Storable (Perl) signed integer overflow. No fix available upstream. Not reachable — app doesn't use Perl. Introduced by python:3.14-slim base image bump (#24). Accepted by Kuautli on 2026-08-06."
+    expired_at: "2026-11-04T00:00:00Z"
   - id: CVE-2026-5928
     statement: "glibc info disclosure/DoS via ungetwc. No fix available upstream. Accepted by Kuautli on 2026-07-14."
     expired_at: "2026-10-12T00:00:00Z"
