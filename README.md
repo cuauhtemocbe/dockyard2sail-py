@@ -1,8 +1,15 @@
 # dockyard2sail-py
 
 ![CI](https://github.com/cuauhtemocbe/dockyard2sail-py/actions/workflows/ci.yml/badge.svg)
+![Python](https://img.shields.io/badge/Python-3.14-blue?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-ready-009688?logo=fastapi&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker&logoColor=white)
+![Poetry](https://img.shields.io/badge/Poetry-dependencies-60A5FA?logo=poetry&logoColor=white)
+![Licencia](https://img.shields.io/badge/license-MIT-green)
 
 Template base para proyectos de APIs REST con Python. Incluye configuración lista para desarrollo local y deploy en Railway u otros proveedores cloud.
+
+![Landing page de dockyard2sail-py](./docs/landing-page.jpg)
 
 ## Stack
 
@@ -37,6 +44,34 @@ Arquitectura hexagonal pragmática: separación entre presentación, dominio, l�
 │       └── infrastructure/       # Implementaciones concretas (DB, APIs externas, etc.)
 └── tests/
 ```
+
+```mermaid
+flowchart TB
+    subgraph pres["api/ (presentación)"]
+        routes["routes.py<br/>/api/v1/..."]
+        web["web.py<br/>/ (landing)"]
+    end
+
+    subgraph svc["services/ (lógica de negocio)"]
+        payment["payment_service.py"]
+    end
+
+    subgraph dom["domain/ (contratos, sin dependencias externas)"]
+        ports["ports.py<br/>typing.Protocol"]
+    end
+
+    subgraph infra["infrastructure/ (implementaciones concretas)"]
+        impl["DB, APIs externas, etc."]
+    end
+
+    routes --> svc
+    web --> svc
+    payment -->|usa| ports
+    impl -.satisface por duck typing.-> ports
+    payment -->|recibe una implementación inyectada| impl
+```
+
+`services/` depende del *contrato* (`domain/ports.py`, un `typing.Protocol`), no de una implementación concreta — cualquier clase de `infrastructure/` que cumpla esa forma sirve, sin heredar de nada. Ver `services/payment_service.py` y `domain/ports.py` para el ejemplo mínimo.
 
 ## Desarrollo
 
