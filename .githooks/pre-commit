@@ -1,11 +1,8 @@
 #!/bin/sh
 set -e
 
-echo "pre-commit: ruff check..."
-make lint
-
-echo "pre-commit: ruff format --check..."
-make format-check
+echo "pre-commit: make validate (lint + format-check + typecheck + test)..."
+make validate
 
 echo "pre-commit: gitleaks (staged secrets)..."
 docker run --rm -v "$(pwd):/repo" -w /repo zricethezav/gitleaks:latest protect --staged --redact -v

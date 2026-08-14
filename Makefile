@@ -1,7 +1,7 @@
 IMAGE = dockyard2sail-py
 
 .DEFAULT_GOAL := help
-.PHONY: help build up up-d down logs test coverage-xml test-v lint format-check typecheck lock-check install-hooks install run-local test-local lint-local
+.PHONY: help build up up-d down logs test coverage-xml test-v lint format-check typecheck lock-check validate install-hooks install run-local test-local lint-local
 
 # --- Docker (flujo principal) ---
 
@@ -40,6 +40,8 @@ typecheck: up-d ## Correr mypy dentro de Docker
 
 lock-check: up-d ## Verificar que poetry.lock esté sincronizado con pyproject.toml
 	docker compose exec api poetry check --lock
+
+validate: lint format-check typecheck test ## Correr la suite completa de validación (lint + format-check + typecheck + test)
 
 install-hooks: ## Habilitar el git hook de pre-commit (lint + format, corre en Docker)
 	git config core.hooksPath .githooks
