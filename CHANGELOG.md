@@ -7,6 +7,26 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 ## [Unreleased]
 
+### Added
+
+- Página de aterrizaje interactiva en `GET /` (antes 404, API pura JSON): plantillas Jinja2 + archivos estáticos, con demo en vivo del endpoint `/api/v1/hello` y chequeo de estado del servicio.
+- `docs/development-standards.md`: estándar de prácticas de desarrollo (Docker-first, hooks, CI, arquitectura hexagonal, config, TDD) documentado en el propio repo.
+
+### Changed
+
+- Imagen base bumpeada de `python:3.13-slim` a `python:3.14-slim` (prod y dev).
+- Contenedor de desarrollo (`Dockerfile.dev`) corre como root a propósito, para que los bind mounts de `src/`/`tests/` queden escribibles sin desajuste de UID — asimetría documentada frente al `Dockerfile` de producción (no-root).
+- `actions/checkout` y dependencias de desarrollo (`pytest-asyncio`, `mypy`, `pytest-cov`) actualizadas vía Dependabot.
+- README: badges del stack, screenshot de la landing page y diagrama de arquitectura; texto sincronizado con la versión de Python y la estructura actual del código.
+
+### Fixed
+
+- Copy de la landing page ajustado a español mexicano.
+
+### Security
+
+- CVEs sin fix de `perl` (heredados del bump a `python:3.14-slim`) allowlisteados explícitamente en `.trivyignore.yaml`, con fecha de re-revisión.
+
 ## [0.1.0] - 2026-08-04
 
 Línea base del template: skeleton FastAPI con arquitectura hexagonal, pipeline de CI y tooling de desarrollo containerizado.
