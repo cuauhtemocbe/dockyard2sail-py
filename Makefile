@@ -43,9 +43,9 @@ lock-check: up-d ## Verificar que poetry.lock esté sincronizado con pyproject.t
 
 validate: lint format-check typecheck test ## Correr la suite completa de validación (lint + format-check + typecheck + test)
 
-install-hooks: ## Habilitar el git hook de pre-commit (lint + format, corre en Docker)
+install-hooks: ## Habilitar los git hooks (pre-commit: lint + format, en Docker; pre-push: gate de CVEs Trivy)
 	git config core.hooksPath .githooks
-	chmod +x .githooks/pre-commit
+	chmod +x .githooks/*
 
 # --- Local (opcional: fallback sin Docker, requiere Python 3.13 y Poetry) ---
 

@@ -91,6 +91,8 @@ make install-hooks      # Habilitar el pre-commit hook (lint + format + secret s
 
 El pre-commit hook (`.githooks/pre-commit`, habilitado con `make install-hooks`) corre `ruff check`, `ruff format --check` y un scan de secretos sobre el diff staged con [gitleaks](https://github.com/gitleaks/gitleaks) (`gitleaks protect --staged`), vía la imagen oficial `zricethezav/gitleaks` — no requiere instalar el binario localmente, solo Docker. Complementa (no reemplaza) el scan `trivy-fs` que corre en CI sobre todo el filesystem.
 
+El pre-push hook (`.githooks/pre-push`, también habilitado con `make install-hooks`) corre `trivy fs . --scanners vuln --severity CRITICAL --exit-code 1 --ignore-unfixed --quiet` y bloquea el push solo si hay una vulnerabilidad CRITICAL con fix publicado (HIGH/MEDIUM y CRITICAL sin fix no bloquean). A diferencia del pre-commit, requiere el binario [`trivy`](https://github.com/aquasecurity/trivy) en el `PATH` del host y falla cerrado: si `trivy` no está instalado, el push se bloquea con un mensaje que apunta a `.claude/skills/trivy-scan/setup.md`.
+
 `main` tiene branch protection: los PRs no son mergeables si `lint`, `test`, `typecheck`, `lock-check`, `trivy-fs` o `license-check` fallan. El owner del repo está exceptuado (`enforce_admins: false`) y puede seguir pusheando directo a `main`.
 
 ## Endpoints
