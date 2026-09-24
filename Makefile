@@ -47,7 +47,7 @@ install-hooks: ## Habilitar los git hooks (pre-commit: lint + format, en Docker;
 	git config core.hooksPath .githooks
 	chmod +x .githooks/*
 
-# --- Local (opcional: fallback sin Docker, requiere Python 3.13 y Poetry) ---
+# --- Local (opcional: fallback sin Docker, requiere Python 3.14 y Poetry) ---
 
 install: ## [local] Instalar dependencias con poetry
 	poetry install
