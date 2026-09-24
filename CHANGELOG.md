@@ -22,6 +22,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ### Fixed
 
 - Copy de la landing page ajustado a español mexicano.
+- Workflow `dependabot-socket-firewall.yml` usaba Python 3.13 (quedó fuera del bump a 3.14): ahora escanea con el mismo intérprete que corre la app.
 
 ### Security
 
