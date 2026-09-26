@@ -29,6 +29,9 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ### Security
 
 - CVEs sin fix de `perl` (heredados del bump a `python:3.14-slim`) allowlisteados explícitamente en `.trivyignore.yaml`, con fecha de re-revisión.
+- Digest de `python:3.14-slim` actualizado (prod, builder y final) para incluir los fixes de `openssl` (CVE-2026-14456) y `util-linux` (CVE-2026-53612/53613/53614) que dejaban rojo el escaneo de imagen en `main`. Sin añadir entradas a `.trivyignore.yaml` (#51).
+- El job `build` de `ci.yml` (escaneo Trivy de imagen) ahora corre también en `pull_request`, para detectar CVEs de la imagen base antes del merge (#51).
+- Workflow `container-security.yml`: reescaneo semanal (lunes) de la imagen, con `workflow_dispatch`, porque los CVEs de la imagen base aparecen sin cambios de código (#51).
 
 ## [0.1.0] - 2026-08-04
 

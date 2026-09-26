@@ -79,8 +79,9 @@ jobs:
           ignore-unfixed: true
           exit-code: "1"
 
+  # Runs on PRs so a base-image bump is scanned before the merge (#51).
   build:
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.event_name == 'pull_request' || (github.ref == 'refs/heads/main' && github.event_name == 'push')
     needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
