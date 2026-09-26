@@ -10,10 +10,12 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ### Added
 
 - Página de aterrizaje interactiva en `GET /` (antes 404, API pura JSON): plantillas Jinja2 + archivos estáticos, con demo en vivo del endpoint `/api/v1/hello` y chequeo de estado del servicio.
+- Job `trivy-config` en `ci.yml`: escanea el `Dockerfile` en busca de misconfiguraciones CRITICAL/HIGH en cada push y pull request (`Dockerfile.dev` se omite). Parte de meta-projects#56.
 - `docs/development-standards.md`: estándar de prácticas de desarrollo (Docker-first, hooks, CI, arquitectura hexagonal, config, TDD) documentado en el propio repo.
 
 ### Changed
 
+- Los escaneos Trivy de `ci.yml` (`trivy-fs` e imagen) usan `ignore-unfixed: true`, igual que el resto de la flota y que el gate pre-push: un CVE sin fix publicado ya no falla CI.
 - Imagen base bumpeada de `python:3.13-slim` a `python:3.14-slim` (prod y dev).
 - Contenedor de desarrollo (`Dockerfile.dev`) corre como root a propósito, para que los bind mounts de `src/`/`tests/` queden escribibles sin desajuste de UID — asimetría documentada frente al `Dockerfile` de producción (no-root).
 - `actions/checkout` y dependencias de desarrollo (`pytest-asyncio`, `mypy`, `pytest-cov`) actualizadas vía Dependabot.
