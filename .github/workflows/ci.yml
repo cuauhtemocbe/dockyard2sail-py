@@ -59,6 +59,24 @@ jobs:
           scanners: vuln
           trivyignores: .trivyignore.yaml
           severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+
+  # Dockerfile misconfig scan (meta-projects#56). Runs on PRs too, unlike the
+  # image scan in `build`, which only runs on main.
+  trivy-config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Trivy Dockerfile misconfig scan
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: config
+          scan-ref: .
+          # Dockerfile.dev is local-only tooling, not a production image.
+          skip-files: Dockerfile.dev
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
           exit-code: "1"
 
   build:
@@ -77,4 +95,5 @@ jobs:
           scanners: vuln
           trivyignores: .trivyignore.yaml
           severity: CRITICAL,HIGH
+          ignore-unfixed: true
           exit-code: "1"
