@@ -42,15 +42,18 @@ jobs:
         with:
           mode: firewall-free
 
+      # The only continue-on-error step. A failure here may be a firewall block or any
+      # unrelated install error (network, PyPI down, wheel that doesn't compile); the
+      # step below can't tell them apart, so it fails closed and says so.
       - name: Install with firewall
         id: install
         run: sfw pip install -r requirements.txt
         continue-on-error: true
 
-      - name: Close PR if firewall blocked something
+      - name: Close PR if firewall install failed
         if: steps.install.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh pr close ${{ github.event.pull_request.number }} \
-            --comment "Socket Firewall blocked this dependency for malicious/suspicious behavior. Closed automatically."
+            --comment "\`sfw pip install\` failed for this PR. That may be a Socket Firewall block (malicious/suspicious dependency) or an unrelated install error (network, PyPI, build). Closed automatically — check the job log and reopen if it is a false positive."
