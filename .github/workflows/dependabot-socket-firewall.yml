@@ -20,25 +20,40 @@ jobs:
 
       # sfw doesn't support Poetry directly (only pip/uv, npm/yarn/pnpm, cargo) —
       # export the PR's resolved lock file to requirements.txt so "sfw pip install"
-      # sees the exact dependency set Dependabot is proposing.
+      # sees the exact dependency set Dependabot is proposing. `sfw poetry install`
+      # is not an option: it fails with CERTIFICATE_VERIFY_FAILED (requests/certifi
+      # doesn't trust sfw's CA), which would be indistinguishable from a block.
+      #
+      # Poetry 1.8.4 (same as Dockerfile.dev) already ships `poetry export`; Poetry 2.x
+      # would need poetry-plugin-export, pinned. Poetry is installed before
+      # SocketDev/action, so it doesn't go through the firewall itself.
+      #
+      # This step deliberately has no continue-on-error: if `poetry export` fails
+      # (inconsistent lock) the job goes red but the PR stays open. Only the
+      # "Install with firewall" step below may close the PR.
       - name: Install poetry and export requirements
         run: |
-          pip install --no-cache-dir poetry==1.8.4 poetry-plugin-export
-          poetry export -f requirements.txt --output requirements.txt --without-hashes
+          pip install --no-cache-dir poetry==1.8.4
+          # --with dev: `poetry install` installs the dev group but `export` omits it
+          # by default, so ruff/pytest/mypy bumps would skip the firewall.
+          poetry export -f requirements.txt --output requirements.txt --without-hashes --with dev
 
       - uses: SocketDev/action@ba6de6cc0565af1f42295590380973573297e31f # v1.3.2
         with:
           mode: firewall-free
 
+      # The only continue-on-error step. A failure here may be a firewall block or any
+      # unrelated install error (network, PyPI down, wheel that doesn't compile); the
+      # step below can't tell them apart, so it fails closed and says so.
       - name: Install with firewall
         id: install
         run: sfw pip install -r requirements.txt
         continue-on-error: true
 
-      - name: Close PR if firewall blocked something
+      - name: Close PR if firewall install failed
         if: steps.install.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh pr close ${{ github.event.pull_request.number }} \
-            --comment "Socket Firewall blocked this dependency for malicious/suspicious behavior. Closed automatically."
+            --comment "\`sfw pip install\` failed for this PR. That may be a Socket Firewall block (malicious/suspicious dependency) or an unrelated install error (network, PyPI, build). Closed automatically — check the job log and reopen if it is a false positive."
