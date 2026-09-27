@@ -20,6 +20,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - Contenedor de desarrollo (`Dockerfile.dev`) corre como root a propósito, para que los bind mounts de `src/`/`tests/` queden escribibles sin desajuste de UID — asimetría documentada frente al `Dockerfile` de producción (no-root).
 - `actions/checkout` y dependencias de desarrollo (`pytest-asyncio`, `mypy`, `pytest-cov`) actualizadas vía Dependabot.
 - README: badges del stack, screenshot de la landing page y diagrama de arquitectura; texto sincronizado con la versión de Python y la estructura actual del código.
+- Workflow `dependabot-socket-firewall.yml` alineado con el spike de Poetry (DataScience-Docker#38): `poetry export` incluye el grupo `dev` (los bumps de ruff/pytest/mypy antes no pasaban por Socket Firewall), se quita `poetry-plugin-export` (Poetry 1.8.4 ya trae `export`), el comentario de cierre ya no afirma que hubo un bloqueo (puede ser un error de instalación ajeno) y se documenta que un fallo de `poetry export` deja el job en rojo sin cerrar el PR.
 
 ### Fixed
 
