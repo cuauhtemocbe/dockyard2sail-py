@@ -22,6 +22,10 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - README: badges del stack, screenshot de la landing page y diagrama de arquitectura; texto sincronizado con la versión de Python y la estructura actual del código.
 - Workflow `dependabot-socket-firewall.yml` alineado con el spike de Poetry (DataScience-Docker#38): `poetry export` incluye el grupo `dev` (los bumps de ruff/pytest/mypy antes no pasaban por Socket Firewall), se quita `poetry-plugin-export` (Poetry 1.8.4 ya trae `export`), el comentario de cierre ya no afirma que hubo un bloqueo (puede ser un error de instalación ajeno) y se documenta que un fallo de `poetry export` deja el job en rojo sin cerrar el PR.
 
+### Removed
+
+- `docs/development-standards.md` y su sección en el README: este repo ya no conserva una copia del documento de estándares de desarrollo.
+
 ### Fixed
 
 - Copy de la landing page ajustado a español mexicano.
