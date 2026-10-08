@@ -6,8 +6,7 @@
 # bind-mounted src/ and tests/ (docker-compose.yml) are owned by the host
 # user, and a non-root container user can't write into them (e.g. pytest-cov's
 # coverage.xml) unless its UID matches the host's. No real exposure here since
-# this container is never reachable outside localhost. See
-# docs/development-standards.md sections 1 and 5.
+# this container is never reachable outside localhost.
 FROM python:3.14-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
