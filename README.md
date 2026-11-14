@@ -14,7 +14,7 @@ Template base para proyectos de APIs REST con Python. Incluye configuración lis
 ## Stack
 
 - **Python 3.14** + **FastAPI** + **Poetry**
-- **Docker** (imagen separada para dev y prod; healthcheck + digest pin en producción)
+- **Docker** (imagen separada para dev y prod; healthcheck; base image con versión exacta + digest pin en producción y dev)
 - **pydantic-settings** para configuración tipada, validada al arranque
 - **pytest** + **httpx** para tests async (cobertura mínima 90%, forzada en CI)
 - **Ruff** para linting y formato (config explícita, enforced en CI y en un pre-commit hook)
@@ -114,7 +114,7 @@ docker build -t dockyard2sail-py .
 docker run -p 8000:8000 dockyard2sail-py
 ```
 
-**Nota sobre el pinning del base image**: `Dockerfile` (producción) fija `python:3.14-slim` a un digest `@sha256:...` específico para builds reproducibles — Dependabot propone el bump cuando hay una versión nueva (ver `.github/dependabot.yml`). `Dockerfile.dev` usa deliberadamente el tag flotante (sin digest): en desarrollo local pesa más recibir parches de seguridad automáticos en cada rebuild que la reproducibilidad exacta byte a byte.
+**Nota sobre el pinning del base image**: `Dockerfile` (producción) y `Dockerfile.dev` fijan la misma cadena `python:3.14.10-slim-trixie@sha256:...` (versión exacta + digest) en todas sus etapas, para builds reproducibles y el mismo CPython parchado en desarrollo y producción. Dependabot propone el bump de ambos cuando hay una versión nueva (ver `.github/dependabot.yml`); el siguiente release de CPython es un buscar-y-reemplazar de esa cadena.
 
 **Nota sobre el usuario del contenedor**: `Dockerfile` (producción) corre como usuario no-root (`appuser`). `Dockerfile.dev` corre deliberadamente como root: este contenedor nunca es alcanzable fuera de localhost, y root evita que los bind mounts de `docker-compose.yml` (`src/`, `tests/`) queden no-escribibles para un uid de contenedor que no coincide con el del host (ej. al generar `tests/coverage.xml` con `make coverage-xml`).
 

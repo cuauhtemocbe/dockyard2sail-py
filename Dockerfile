@@ -1,4 +1,4 @@
-FROM python:3.14-slim@sha256:f85c5697265c178cc6887276c55fe16cf3d14ca35c3df6a5eab3b360534a55d2 AS builder
+FROM python:3.14.10-slim-trixie@sha256:9aaa474097d094040649f2162a627c0049b408f52138d980916788d80f04802f AS builder
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -7,23 +7,23 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     POETRY_VIRTUALENVS_CREATE=true \
     POETRY_VIRTUALENVS_IN_PROJECT=true
 
-RUN pip install --no-cache-dir --upgrade pip==26.1.2 && \
+RUN pip install --no-cache-dir --upgrade pip==26.2.2 && \
     pip install --no-cache-dir poetry==$POETRY_VERSION
 
 WORKDIR /app
 
 COPY pyproject.toml poetry.lock* ./
 RUN poetry install --no-interaction --no-ansi --only main --no-root && \
-    /app/.venv/bin/pip install --no-cache-dir --upgrade pip==26.1.2
+    /app/.venv/bin/pip install --no-cache-dir --upgrade pip==26.2.2
 
-FROM python:3.14-slim@sha256:f85c5697265c178cc6887276c55fe16cf3d14ca35c3df6a5eab3b360534a55d2
+FROM python:3.14.10-slim-trixie@sha256:9aaa474097d094040649f2162a627c0049b408f52138d980916788d80f04802f
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app/src \
     PATH=/app/.venv/bin:$PATH
 
-RUN pip install --no-cache-dir --upgrade pip==26.1.2 && \
+RUN pip install --no-cache-dir --upgrade pip==26.2.2 && \
     addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 
 WORKDIR /app
