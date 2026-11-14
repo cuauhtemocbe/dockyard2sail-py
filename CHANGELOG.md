@@ -17,6 +17,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 - Los escaneos Trivy de `ci.yml` (`trivy-fs` e imagen) usan `ignore-unfixed: true`, igual que el resto de la flota y que el gate pre-push: un CVE sin fix publicado ya no falla CI.
 - Imagen base bumpeada de `python:3.13-slim` a `python:3.14-slim` (prod y dev).
+- Imagen base fijada a `python:3.14.10-slim-trixie@sha256:9aaa4740…` (CPython 3.14.10, Debian 13.7) en `Dockerfile` (builder y final) y en `Dockerfile.dev`, que deja de usar el tag flotante `python:3.14-slim`: dev y prod comparten la misma cadena (meta-projects#92). `pip` sube de 26.1.2 a 26.2.2, el que trae esa imagen.
 - Contenedor de desarrollo (`Dockerfile.dev`) corre como root a propósito, para que los bind mounts de `src/`/`tests/` queden escribibles sin desajuste de UID — asimetría documentada frente al `Dockerfile` de producción (no-root).
 - `actions/checkout` y dependencias de desarrollo (`pytest-asyncio`, `mypy`, `pytest-cov`) actualizadas vía Dependabot.
 - README: badges del stack, screenshot de la landing page y diagrama de arquitectura; texto sincronizado con la versión de Python y la estructura actual del código.
@@ -33,6 +34,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 ### Security
 
+- Base `python:3.14.10-slim-trixie` (3.14.10, release de seguridad exprés): distrusta las claves comprometidas de la CA intermedia de eMudhra en `ssl` (CVE-2026-115557) y corrige el reemplazo de enlaces de `tarfile.tar_filter` (CVE-2026-114583). Antes la imagen de producción estaba en 3.14.8 (meta-projects#92).
 - CVEs sin fix de `perl` (heredados del bump a `python:3.14-slim`) allowlisteados explícitamente en `.trivyignore.yaml`, con fecha de re-revisión.
 - Digest de `python:3.14-slim` actualizado (prod, builder y final) para incluir los fixes de `openssl` (CVE-2026-14456) y `util-linux` (CVE-2026-53612/53613/53614) que dejaban rojo el escaneo de imagen en `main`. Sin añadir entradas a `.trivyignore.yaml` (#51).
 - Digest de `python:3.14-slim` actualizado de nuevo (builder y final) para incluir los fixes de `pcre2` (CVE-2026-103111) y `openssl` (CVE-2026-75804, CVE-2026-84782) que dejaban rojo el job `build` en los pull requests. Sin añadir entradas a `.trivyignore.yaml`.

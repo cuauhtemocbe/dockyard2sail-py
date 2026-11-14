@@ -1,13 +1,13 @@
-# Intentionally not digest-pinned (unlike Dockerfile, the production image):
-# dev benefits from automatic security patches on each local rebuild more than
-# from byte-for-byte reproducibility. See README > Deploy for the rationale.
+# Pinned to the same python:<version>-slim-trixie@sha256:... string as
+# Dockerfile, the production image (meta-projects#92). Dependabot's docker
+# ecosystem proposes the bump for both files. See README > Deploy.
 #
 # Intentionally runs as root (unlike Dockerfile, the production image): the
 # bind-mounted src/ and tests/ (docker-compose.yml) are owned by the host
 # user, and a non-root container user can't write into them (e.g. pytest-cov's
 # coverage.xml) unless its UID matches the host's. No real exposure here since
 # this container is never reachable outside localhost.
-FROM python:3.14-slim
+FROM python:3.14.10-slim-trixie@sha256:9aaa474097d094040649f2162a627c0049b408f52138d980916788d80f04802f
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -16,7 +16,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     POETRY_HOME=/opt/poetry \
     POETRY_VIRTUALENVS_CREATE=false
 
-RUN pip install --no-cache-dir --upgrade pip==26.1.2 && \
+RUN pip install --no-cache-dir --upgrade pip==26.2.2 && \
     pip install --no-cache-dir poetry==$POETRY_VERSION
 
 WORKDIR /app
