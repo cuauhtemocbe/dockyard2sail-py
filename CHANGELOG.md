@@ -17,7 +17,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 - Los escaneos Trivy de `ci.yml` (`trivy-fs` e imagen) usan `ignore-unfixed: true`, igual que el resto de la flota y que el gate pre-push: un CVE sin fix publicado ya no falla CI.
 - Imagen base bumpeada de `python:3.13-slim` a `python:3.14-slim` (prod y dev).
-- Imagen base fijada a `python:3.14.10-slim-trixie@sha256:9aaa4740…` (CPython 3.14.10, Debian 13.7) en `Dockerfile` (builder y final) y en `Dockerfile.dev`, que deja de usar el tag flotante `python:3.14-slim`: dev y prod comparten la misma cadena (meta-projects#92). `pip` sube de 26.1.2 a 26.2.2, el que trae esa imagen.
+- Imagen base fijada a `python:3.14.10-slim-trixie@sha256:9aaa4740…` (CPython 3.14.10, Debian 13.7) en `Dockerfile` (builder y final) y en `Dockerfile.dev`, que deja de usar el tag flotante `python:3.14-slim`: dev y prod comparten la misma cadena (meta-projects#92). `pip` sube de 26.1.2 a 26.3 (la imagen trae 26.2.2; ver Fixed).
 - Contenedor de desarrollo (`Dockerfile.dev`) corre como root a propósito, para que los bind mounts de `src/`/`tests/` queden escribibles sin desajuste de UID — asimetría documentada frente al `Dockerfile` de producción (no-root).
 - `actions/checkout` y dependencias de desarrollo (`pytest-asyncio`, `mypy`, `pytest-cov`) actualizadas vía Dependabot.
 - README: badges del stack, screenshot de la landing page y diagrama de arquitectura; texto sincronizado con la versión de Python y la estructura actual del código.
@@ -31,6 +31,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 - Copy de la landing page ajustado a español mexicano.
 - Workflow `dependabot-socket-firewall.yml` usaba Python 3.13 (quedó fuera del bump a 3.14): ahora escanea con el mismo intérprete que corre la app.
+- Escaneo Trivy de la imagen en rojo en `main` desde el pin de Python 3.14.10 (siete hallazgos HIGH con fix): `zlib1g` se actualiza a `1.3.1-1+deb13u1` en la imagen final (CVE-2026-76844, CVE-2026-85091) porque el digest base aún no lo trae, y `pip` sube a 26.3, que vendoriza `msgpack` 1.2.4 y `urllib3` 2.8.0 en su SBOM. Queda ignorado hasta 2026-12-15 `CVE-2025-47273` de `setuptools` 70.3.0, también vendorizado en pip.
 
 ### Security
 
