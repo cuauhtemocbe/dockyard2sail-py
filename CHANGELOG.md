@@ -16,6 +16,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ### Changed
 
 - Los escaneos Trivy de `ci.yml` (`trivy-fs` e imagen) usan `ignore-unfixed: true`, igual que el resto de la flota y que el gate pre-push: un CVE sin fix publicado ya no falla CI.
+- `.trivyignore.yaml` conserva solo la excepción vigente (CVE-2025-47273, vence 2026-12-15): se podaron 33 entradas ya vencidas (2026-10-12 y 2026-11-04) que Trivy ignoraba como inexistentes, por lo que el resultado del escaneo no cambia.
 - Imagen base bumpeada de `python:3.13-slim` a `python:3.14-slim` (prod y dev).
 - Imagen base fijada a `python:3.14.10-slim-trixie@sha256:9aaa4740…` (CPython 3.14.10, Debian 13.7) en `Dockerfile` (builder y final) y en `Dockerfile.dev`, que deja de usar el tag flotante `python:3.14-slim`: dev y prod comparten la misma cadena (meta-projects#92). `pip` sube de 26.1.2 a 26.3 (la imagen trae 26.2.2; ver Fixed).
 - Contenedor de desarrollo (`Dockerfile.dev`) corre como root a propósito, para que los bind mounts de `src/`/`tests/` queden escribibles sin desajuste de UID — asimetría documentada frente al `Dockerfile` de producción (no-root).
