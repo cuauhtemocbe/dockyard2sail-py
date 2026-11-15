@@ -100,3 +100,9 @@ vulnerabilities:
   - id: CVE-2026-9538
     statement: "perl-Archive-Tar DoS via crafted tar header. No fix available upstream. Not reachable — app doesn't use Perl. Accepted by Kuautli on 2026-07-14."
     expired_at: "2026-10-12T00:00:00Z"
+
+  # pip 26.3 vendors setuptools 70.3.0 and lists it in pip/_vendor/bom.cdx.json,
+  # which Trivy reads as a standalone package. Reviewed 2026-11-15.
+  - id: CVE-2025-47273
+    statement: "setuptools PackageIndex path traversal (fixed in 78.1.1). Vendored inside pip's SBOM, not installed as a package. Not reachable — pip is not invoked at runtime and does not use PackageIndex. Re-review when pip ships a newer vendored setuptools. Proposed 2026-11-15 pending Kuautli's review."
+    expired_at: "2026-12-15T00:00:00Z"

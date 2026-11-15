@@ -7,14 +7,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     POETRY_VIRTUALENVS_CREATE=true \
     POETRY_VIRTUALENVS_IN_PROJECT=true
 
-RUN pip install --no-cache-dir --upgrade pip==26.2.2 && \
+RUN pip install --no-cache-dir --upgrade pip==26.3 && \
     pip install --no-cache-dir poetry==$POETRY_VERSION
 
 WORKDIR /app
 
 COPY pyproject.toml poetry.lock* ./
 RUN poetry install --no-interaction --no-ansi --only main --no-root && \
-    /app/.venv/bin/pip install --no-cache-dir --upgrade pip==26.2.2
+    /app/.venv/bin/pip install --no-cache-dir --upgrade pip==26.3
 
 FROM python:3.14.10-slim-trixie@sha256:9aaa474097d094040649f2162a627c0049b408f52138d980916788d80f04802f
 
@@ -23,7 +23,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH=/app/src \
     PATH=/app/.venv/bin:$PATH
 
-RUN pip install --no-cache-dir --upgrade pip==26.2.2 && \
+# zlib1g 1.3.1-1+deb13u1 fixes CVE-2026-76844 and CVE-2026-85091. The pinned base
+# image predates it; remove this layer once the digest above ships the fix.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends --only-upgrade zlib1g && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir --upgrade pip==26.3 && \
     addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 
 WORKDIR /app
