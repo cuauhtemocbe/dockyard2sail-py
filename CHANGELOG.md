@@ -12,6 +12,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - Página de aterrizaje interactiva en `GET /` (antes 404, API pura JSON): plantillas Jinja2 + archivos estáticos, con demo en vivo del endpoint `/api/v1/hello` y chequeo de estado del servicio.
 - Job `trivy-config` en `ci.yml`: escanea el `Dockerfile` en busca de misconfiguraciones CRITICAL/HIGH en cada push y pull request (`Dockerfile.dev` se omite). Parte de meta-projects#56.
 - `docs/development-standards.md`: estándar de prácticas de desarrollo (Docker-first, hooks, CI, arquitectura hexagonal, config, TDD) documentado en el propio repo.
+- Tests de la landing page (#72): un test de browser (`pytest-playwright`, solo grupo `dev`) que verifica que `GET /` no genera scroll horizontal a 320, 390, 768 y 1280 px, y un test que fija que con `ENVIRONMENT=production` el badge dice `production` y `development` no aparece en la página. `Dockerfile.dev` instala Chromium headless para esos tests; la imagen de producción no cambia.
 
 ### Changed
 
@@ -31,6 +32,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ### Fixed
 
 - Copy de la landing page ajustado a español mexicano.
+- La landing page ya no hace scroll horizontal en teléfonos (#72): el footer quedaba junto a la tarjeta porque `body` era un flex en fila (a 390 px la página medía 401 px), y el input del formulario de demo no podía encogerse en pantallas de 320 px.
 - Workflow `dependabot-socket-firewall.yml` usaba Python 3.13 (quedó fuera del bump a 3.14): ahora escanea con el mismo intérprete que corre la app.
 - Escaneo Trivy de la imagen en rojo en `main` desde el pin de Python 3.14.10 (siete hallazgos HIGH con fix): `zlib1g` se actualiza a `1.3.1-1+deb13u1` en la imagen final (CVE-2026-76844, CVE-2026-85091) porque el digest base aún no lo trae, y `pip` sube a 26.3, que vendoriza `msgpack` 1.2.4 y `urllib3` 2.8.0 en su SBOM. Queda ignorado hasta 2026-12-15 `CVE-2025-47273` de `setuptools` 70.3.0, también vendorizado en pip.
 
