@@ -24,6 +24,15 @@ WORKDIR /app
 COPY pyproject.toml poetry.lock* ./
 RUN poetry install --no-interaction --no-ansi --no-root
 
+# Headless Chromium for the browser tests (tests/test_landing_layout.py). Dev
+# image only: the production Dockerfile neither has pytest-playwright nor a browser.
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+# libatomic1: the slim image lacks it and Playwright's bundled node driver needs it.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libatomic1 && \
+    playwright install --with-deps chromium && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY src/ ./src/
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
