@@ -16,7 +16,7 @@ Template base para proyectos de APIs REST con Python. Incluye configuración lis
 - **Python 3.14** + **FastAPI** + **Poetry**
 - **Docker** (imagen separada para dev y prod; healthcheck; base image con versión exacta + digest pin en producción y dev)
 - **pydantic-settings** para configuración tipada, validada al arranque
-- **pytest** + **httpx** para tests async (cobertura mínima 90%, forzada en CI)
+- **pytest** + **httpx** para tests async (cobertura mínima 90%, forzada en CI) y **pytest-playwright** (Chromium headless, solo en la imagen de desarrollo) para tests de layout en browser
 - **Ruff** para linting y formato (config explícita, enforced en CI y en un pre-commit hook)
 
 ## Estructura

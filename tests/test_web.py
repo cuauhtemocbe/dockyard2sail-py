@@ -1,7 +1,9 @@
+import re
+
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from app.config import settings
+from app.config import Environment, settings
 from app.main import _get_version, app
 
 
@@ -24,6 +26,17 @@ async def test_landing_page_includes_version_and_environment(client):
 
     assert _get_version() in response.text
     assert settings.environment.value in response.text
+
+
+async def test_landing_page_in_production_shows_production_badge_only(
+    client, monkeypatch
+):
+    monkeypatch.setattr(settings, "environment", Environment.PRODUCTION)
+
+    response = await client.get("/")
+
+    assert re.search(r'<span class="badge">\s*production\s*</span>', response.text)
+    assert "development" not in response.text.lower()
 
 
 async def test_landing_page_css_asset_is_served(client):
